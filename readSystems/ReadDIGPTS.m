@@ -1,6 +1,12 @@
-function ReadDIGPTS(filePath)
+function ReadDIGPTS(folderPath)
+
+if ~(folderPath(end) == '\' || folderPath(end) == '/')
+    folderPath = [folderPath, '\'];
+end
 
 [DigptsName,~] = getAllFiles(filePath);
+holdFilename = [DigptsName{1}, 'hold'];
+copyfile(DigptsName{1}, holdFilename);
 dig = load(DigptsName{1});
 
 nSrcs = 16;
@@ -41,5 +47,8 @@ else
     disp(['The following lines seems to match: ', num2str(badIdx(:,1)')])
     disp(['                                    ', num2str(badIdx(:,2)')])
 end
+
+movefile(holdFilename, holdFilename(1:end-4))
+movefile(DigptsName{1}, [DigptsName{1}, '.digpts'])
 
 end
