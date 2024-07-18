@@ -4,7 +4,7 @@ if ~(folderPath(end) == '\' || folderPath(end) == '/')
     folderPath = [folderPath, '\'];
 end
 
-[DigptsName,~] = getAllFiles(filePath);
+[DigptsName,~] = getAllFiles(folderPath);
 holdFilename = [DigptsName{1}, 'hold'];
 copyfile(DigptsName{1}, holdFilename);
 dig = load(DigptsName{1});
