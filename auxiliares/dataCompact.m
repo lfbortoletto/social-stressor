@@ -6,7 +6,7 @@ function dataCompact(backupPath, rawPath, validExtensionList)
 for files = 1:length(filePathList)
     delete(filePathList{files})
 end
-copyfile(backupPath, rawPath)
+copyfile(backupPath, rawPath, 'f')
 
 % clear backup files from raw directory.
 [filePathList, ~] = getAllFiles(rawPath);
