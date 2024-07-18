@@ -48,7 +48,7 @@ else
     disp(['                                    ', num2str(badIdx(:,2)')])
 end
 
+movefile(DigptsName{1}, [DigptsName{1}(1:end-4), '.digpts'])
 movefile(holdFilename, holdFilename(1:end-4))
-movefile(DigptsName{1}, [DigptsName{1}, '.digpts'])
 
 end
