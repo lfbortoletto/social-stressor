@@ -1,5 +1,8 @@
-function [GW4] = ReadVivaSensing(folder)
-% This is an outdated reader version for GW4 PPG APK.
+function [GW4] = ReadVivaSensing(folderPath, filenameSave)
+
+if ~(folderPath(end) == '\' || folderPath(end) == '/')
+    folderPath = [folderPath, '\'];
+end
 
 GW4 = [];
 [filenames, ~] = getAllFiles(folder);
@@ -59,5 +62,8 @@ GW4.acc = acc;
 GW4.ppgIR = ppgIR;
 GW4.ppgG = ppgG;
 GW4.hr = hr;
+
+save([folderPath, filenameSave, '.gw4'], 'GW4')
+
 
 end
