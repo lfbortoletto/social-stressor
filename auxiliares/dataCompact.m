@@ -1,4 +1,4 @@
-function dataCompact(backupPath, rawPath)
+function dataCompact(backupPath, rawPath, validExtensionList)
 % Remove all backup files from the raw dataset folder.
 
 % clear raw directory and copy backup.
@@ -10,7 +10,6 @@ copyfile(backupPath, rawPath)
 
 % clear backup files from raw directory.
 [filePathList, ~] = getAllFiles(rawPath);
-validExtensionList = {'.finometer', '.gw4', '.eda', '.nirs', '.G3C', '.mist'};
 for files = 1:length(filePathList)
     if ~contains(filePathList{files}, validExtensionList)
         delete(filePathList{files})
