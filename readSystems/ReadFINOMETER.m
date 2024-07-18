@@ -1,4 +1,4 @@
-function data = ReadFINOMETER(folderPath)
+function ReadFINOMETER(folderPath, filenameSave)
     
 %Inputs:
 %   filepaths: struct with fieldnames ("waveforms", "brs", "beats") containing
@@ -75,5 +75,6 @@ for i = lst.brs
     data.brs.(i) = str2num(char(replace(data.brs.(i), ',','.')));
 end
 
+save([folderPath, filenameSave, '.finometer'], 'data')
 
 end
