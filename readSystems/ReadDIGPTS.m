@@ -6,7 +6,7 @@ end
 
 [DigptsName,~] = getAllFiles(folderPath);
 holdFilename = [DigptsName{1}, 'hold'];
-copyfile(DigptsName{1}, holdFilename);
+copyfile(DigptsName{1}, holdFilename, 'f');
 dig = load(DigptsName{1});
 
 nSrcs = 16;
@@ -48,7 +48,7 @@ else
     disp(['                                    ', num2str(badIdx(:,2)')])
 end
 
-movefile(DigptsName{1}, [DigptsName{1}(1:end-4), '.digpts'])
-movefile(holdFilename, holdFilename(1:end-4))
+movefile(DigptsName{1}, [DigptsName{1}(1:end-4), '.digpts'], 'f')
+movefile(holdFilename, holdFilename(1:end-4), 'f')
 
 end
