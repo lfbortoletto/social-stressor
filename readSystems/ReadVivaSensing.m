@@ -5,11 +5,11 @@ if ~(folderPath(end) == '\' || folderPath(end) == '/')
 end
 
 GW4 = [];
-[filenames, ~] = getAllFiles(folder);
+[filenames, ~] = getAllFiles(folderPath);
 
 %% Check existance.
 if isempty(filenames)
-    disp(['No GW4 files found in ', folder])
+    disp(['No GW4 files found in ', folderPath])
     return
 end
 
@@ -27,7 +27,7 @@ for k = 1:numel(filenames)
 end
 
 if ~exist('acc', 'var')
-    disp(['No GW4 files found in ', folder])
+    disp(['No GW4 files found in ', folderPath])
     return
 end
 

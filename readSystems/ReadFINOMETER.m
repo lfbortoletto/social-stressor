@@ -7,6 +7,10 @@ function ReadFINOMETER(folderPath, filenameSave)
 %Output:
 %   data: Finometer processed data.
 
+if ~(folderPath(end) == '\' || folderPath(end) == '/')
+    folderPath = [folderPath, '\'];
+end
+
 [filenames, ~] = getAllFiles(folderPath);
 for files = 1:length(filenames)
     if contains(filenames{files},'waveforms')
