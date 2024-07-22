@@ -1,4 +1,4 @@
-function varargout = ReadEDAMOVE4(folderPath, filesave)
+function varargout = ReadEDAMOVE4(folderPath, filenameSave)
 % ReadEDAMOVE4 Reads and processes EDA-MOVE4 data files in the specified folder.
 %
 % This function reads EDA-MOVE4 data files from the given folder path, processes the data,
@@ -10,7 +10,7 @@ function varargout = ReadEDAMOVE4(folderPath, filesave)
 %
 % Inputs:
 %   folderPath - A string specifying the path to the folder containing the EDA-MOVE4 data files.
-%   filesave   - A string specifying the name of the file to save the processed data.
+%   filenameSave   - A string specifying the name of the file to save the processed data.
 %
 % Output (optional):
 %   dataStruct - A struct containing the raw and processed data.
@@ -93,6 +93,6 @@ function varargout = ReadEDAMOVE4(folderPath, filesave)
         varargout{1} = edamove;
     else
         % Save the processed data to a .eda file
-        save([folderPath, filesave, '.eda'], 'edamove')
+        save([folderPath, filenameSave, '.eda'], 'edamove')
     end
 end
