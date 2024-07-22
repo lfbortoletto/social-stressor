@@ -37,6 +37,7 @@ function [varargout] = ReadG3C(videoPath, edgeRemove, cursorLag, frameDiff)
 %   L. F. Bortoletto (2023/8/03): draw rectangle over the middle frame.
 %   L. F. Bortoletto (2024/3/20): video segmentation to reduce memory.
 %   L. F. Bortoletto (2024/7/05): updated elapsed time display.
+%   L. F. Bortoletto (2024/7/22): removed info field from G3C struct.
 %
 % To-do:
 %
@@ -268,10 +269,6 @@ end
 currentStep = currentStep + 1;
 
 end
-
-% Update G3C struct information.
-G3C.info.filepath = videoPath;
-G3C.info.videoInfo = vidReader;
 
 % Tranpose data.
 G3C.d = G3C.d(:);
