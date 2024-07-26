@@ -31,8 +31,8 @@ function ReadDIGPTS(folderPath)
     for file = 1:length(filePathList)
         if contains(filePathList{file}, '-fastrak.txt')
             readFilename = [filePathList{file}(1:end - length('-fastrak.txt')), '.txt'];
-            copyfile(filePathList{file}, readFilename, 'f');
-            dig = load(readFilename);
+            dig = load(filePathList{file});
+            originalFileID = file;
         end
     end
 
@@ -51,6 +51,9 @@ function ReadDIGPTS(folderPath)
 
         % Extract positions of sources and detectors
         digpts = extract_positions(dig, nSrcs, nDets);
+        
+        % Original file copy 
+        copyfile(filePathList{originalFileID}, readFilename, 'f');
 
         % Open the file for writing the digitized points
         fid = fopen(readFilename, 'w');
@@ -82,9 +85,10 @@ function ReadDIGPTS(folderPath)
         [badIdx(:, 1), badIdx(:, 2)] = find(digptsDistance < 10);
         removeDigpts = (badIdx(:, 2) - badIdx(:, 1)) == 0;
         badIdx(removeDigpts, :) = [];
-        disp(['Fail to convert file "', filePathList{1}, '". There are ', num2str(size(dig, 1) - (nSrcs + nDets + 5)), ' lines missing/exceeding.'])
+        disp(['Fail to convert file "', filePathList{1}, '". There are ', num2str(size(dig, 1) - (nSrcs + nDets + 5)), ' lines missing/exceeding.']);
         disp(['The following lines seem to match: ', num2str(badIdx(:, 1)')])
         disp(['                                    ', num2str(badIdx(:, 2)')])
+        return
     end
 
 end
