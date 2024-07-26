@@ -12,16 +12,16 @@ validExtensionList = {'.eda','.nirs','.finometer','.G3C','.gw4'};
 dataCompact(backupPath, rawPath, validExtensionList);
 
 %% Synchronize systems from backup data into the raw folder.
-for k = 1:21
-    disp(['Subject: ', num2str(k)]);
-    if k < 10
-        dataName = ['subject-00',num2str(k)];
+for participant = 1:21
+    disp(['Subject: ', num2str(participant)]);
+    if participant < 10
+        dataName = ['subject-00',num2str(participant)];
     else
-        dataName = ['subject-0',num2str(k)];
+        dataName = ['subject-0',num2str(participant)];
     end
     
     clear syncIdx
-    if k == 8 || k == 10
+    if participant == 8 || participant == 10
         validExtensionList = {'.eda','.nirs','.finometer','.gw4'};
         syncIdx.FINO = 1;
         syncIdx.GW4 = 2;
@@ -226,7 +226,9 @@ data = load(backuppath,'-mat');
 data = data.G3C;
 
 %% Sync G3C.  
-data = rmfield(data, 'info');
+if isfield(data, 'info')
+    data = rmfield(data, 'info');
+end
 data = rmfield(data, 'cursorPosition');
 
 trigger_time = nirs.t(find(nirs.s));  %#ok<FNDSB>
