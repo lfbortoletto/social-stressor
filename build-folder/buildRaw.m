@@ -12,7 +12,7 @@ validExtensionList = {'.eda','.nirs','.finometer','.G3C','.gw4'};
 dataCompact(backupPath, rawPath, validExtensionList);
 
 %% Synchronize systems from backup data into the raw folder.
-for participant = 1:21
+for participant = 1:29
     disp(['Subject: ', num2str(participant)]);
     if participant < 10
         dataName = ['subject-00',num2str(participant)];
@@ -27,12 +27,20 @@ for participant = 1:21
         syncIdx.GW4 = 2;
         syncIdx.EDA = 4;
         syncIdx.lastTrigger = 4;
+    elseif participant < 27
+        validExtensionList = {'.eda','.nirs','.finometer','.G3C','.gw4'};
+        syncIdx.FINO = 1;
+        syncIdx.GW4 = 2;
+        syncIdx.G3C = 3;
+        syncIdx.EDA = 4;
+        syncIdx.lastTrigger = 4;
     else
         validExtensionList = {'.eda','.nirs','.finometer','.G3C','.gw4'};
         syncIdx.FINO = 1;
         syncIdx.GW4 = 2;
         syncIdx.G3C = 3;
         syncIdx.EDA = 4;
+        syncIdx.AUDIO = 5;
         syncIdx.lastTrigger = 4;
     end
     
@@ -167,7 +175,7 @@ for files = 1:length(backupPathList)
         savePath = rawPathList{files};
     end
 end
-SyncNIRS(backupFilePath, savePath, syncIdx.lastTrigger)
+SyncNIRS(backupFilePath, savePath, syncIdx)
 disp('Synchronization was successfully performed.')
 clear backupFilePath savePath
 
@@ -333,12 +341,20 @@ save(savepath, 'data')
 
 end
 
-function SyncNIRS(backuppath, savepath, lastTrigger)
+function SyncNIRS(backuppath, savepath, syncIdx)
 
 %% Fileinfo.
 load(backuppath,'-mat')
 
-trigger_time = data.t(find(data.s));  %#ok<FNDSB>
+lastTrigger = syncIdx.lastTrigger;
+
+if isfield(syncIdx, 'AUDIO')
+    allTriggers = find(nirs.s);
+    audioTrigger = allTriggers(syncIdx.AUDIO);
+    data.s(audioTrigger) = 0;
+end
+
+trigger_time = data.t(find(data.s));  
 disp(['NIRS has ', num2str(length(trigger_time)),' triggers.'])
 delay_start = trigger_time(lastTrigger);
 total_length = data.t(end) - trigger_time(lastTrigger);
