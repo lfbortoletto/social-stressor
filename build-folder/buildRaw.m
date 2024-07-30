@@ -349,7 +349,7 @@ load(backuppath,'-mat')
 lastTrigger = syncIdx.lastTrigger;
 
 if isfield(syncIdx, 'AUDIO')
-    allTriggers = find(nirs.s);
+    allTriggers = find(data.s);
     audioTrigger = allTriggers(syncIdx.AUDIO);
     data.s(audioTrigger) = 0;
 end
