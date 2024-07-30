@@ -4,7 +4,7 @@ function varargout = ReadNIRSCOUT(folderPath, layoutFilePath, filenameSave)
 % and collaborators. It needs 2 input arguments:
 %  1) folderPath: folder path that contains all nirs files.
 %  2) layoutFilePath: Map and Map3d structure from a .layout file.
-%
+%  3) filenameSave: saving filename as a char array.
 % The combined data will be stored in an object. 
 % If no output argument is passed, a .lob file will be saved in the 
 % input folder containing an object called data.
