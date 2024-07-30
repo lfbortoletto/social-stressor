@@ -1,4 +1,4 @@
-function varargout = ReadNIRSCOUT(folderPath, layoutFilePath)
+function varargout = ReadNIRSCOUT(folderPath, layoutFilePath, filenameSave)
 %
 % This function reads NIRScout (NIRx) files used in Mesquita's lab
 % and collaborators. It needs 2 input arguments:
@@ -40,7 +40,7 @@ else
 end
 % Unwrap cw-nirs info from NIRx files
 data = RunNIRx2nirs(hdrPath, layoutFilePath);
-saved_file = [hdrPath(1:end-4) '.nirs'];
+saved_file = [filenameSave '.nirs'];
 
 % Check stimulation vector for run
 foo = find(data.s(:) == 1);
