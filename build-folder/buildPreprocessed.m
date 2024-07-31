@@ -1,9 +1,9 @@
 clear; clc;
 
 %% Define paths.
-backupPath = 'C:\Users\lipeb\OneDrive\Área de Trabalho\projects\social-interaction\backup\';
-rawPath = 'C:\Users\lipeb\OneDrive\Área de Trabalho\projects\social-interaction\raw\';
-preprocPath = 'C:\Users\lipeb\OneDrive\Área de Trabalho\projects\social-interaction\share\';
+backupPath = '';
+rawPath = '';
+preprocPath = '';
 
 %% Preprocess physiology data and store GLM data.
 dispFigure = 0;
