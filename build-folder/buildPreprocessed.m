@@ -6,8 +6,7 @@ rawPath = '';
 preprocPath = '';
 
 %% Preprocess physiology data and store GLM data.
-dispFigure = 0;
-for participant = 21
+for participant = 1:21
     if participant < 10
         dataName = ['subject-00',num2str(participant)];
     else
@@ -25,7 +24,7 @@ function PreprocessPhysiology(rawPath, savePath, dataName)
 %% Pre-processing parameters.
 physiology.PreProcParams.FilterFreq.HR = [0.005 0.5]; 
 physiology.PreProcParams.FilterFreq.MAP = [0.005 0.5]; 
-physiology.PreProcParams.FilterFreq.CO = [0.005 0.5]; 
+physiology.PreProcParams.FilterFreq.SV = [0.005 0.5]; 
 physiology.PreProcParams.FilterFreq.RR = [0.005 0.5]; 
 physiology.PreProcParams.FilterFreq.CO2 = [0.005 0.5]; 
 physiology.PreProcParams.FilterFreq.EDA = [0.005 0.5]; 
@@ -107,10 +106,26 @@ yqHR = interp1(tBeats, yHR, timeArray)';
 yqMAP = interp1(tBeats, yMAP, timeArray)';
 yqSV = interp1(tBeats, ySV, timeArray)';
 
-% Frequency filter.
-filtHR = hmrBandpassFiltLOB(yqHR, physiology.PreProcParams.fSample, bpf.HR(1), bpf.HR(2));
-filtMAP = hmrBandpassFiltLOB(yqMAP, physiology.PreProcParams.fSample, bpf.MAP(1), bpf.MAP(2));
-filtSV = hmrBandpassFiltLOB(yqSV, physiology.PreProcParams.fSample, bpf.CO(1), bpf.CO(2));
+% Normalize the cutoff frequencies with respect to Nyquist frequency and
+% define butterworth filter order.
+filterOrder = 3;
+nyquist = physiology.PreProcParams.fSample / 2;
+
+% Design a third-order Butterworth bandpass filter, fill nan values and
+% apply filter.
+[b, a] = butter(filterOrder, [bpf.HR]/nyquist, 'bandpass');
+yqHR = fillmissing(yqHR,'linear');
+filtHR = filtfilt(b, a, yqHR);
+
+clear a b
+[b, a] = butter(filterOrder, [bpf.MAP]/nyquist, 'bandpass');
+yqMAP = fillmissing(yqMAP,'linear');
+filtMAP = filtfilt(b, a, yqMAP);
+
+clear a b
+[b, a] = butter(filterOrder, [bpf.SV]/nyquist, 'bandpass');
+yqSV = fillmissing(yqSV,'linear');
+filtSV = filtfilt(b, a, yqSV);
 
 % Store data into new field.
 physiology.time = timeArray - timeArray(1); physiology.time = physiology.time(:);
@@ -135,9 +150,21 @@ timeArray = min(nirs.t) : 1/physiology.PreProcParams.fSample : max(nirs.t); time
 yqEDA = interp1(tEDA, yEDA, timeArray)';
 yqACC = interp1(tACC, yACC, timeArray)';
 
-% Frequency filter.
-filtEDA = hmrBandpassFiltLOB(yqEDA, physiology.PreProcParams.fSample, bpf.EDA(1), bpf.EDA(2));
-filtACC = hmrBandpassFiltLOB(yqACC, physiology.PreProcParams.fSample, bpf.ACC(1), bpf.ACC(2));
+% Normalize the cutoff frequencies with respect to Nyquist frequency and
+% define butterworth filter order.
+filterOrder = 3;
+nyquist = physiology.PreProcParams.fSample / 2;
+
+% Design a third-order Butterworth bandpass filter, fill nan values and
+% apply filter.
+[b, a] = butter(filterOrder, [bpf.EDA]/nyquist, 'bandpass');
+yqEDA = fillmissing(yqEDA,'linear');
+filtEDA = filtfilt(b, a, yqEDA);
+
+clear a b
+[b, a] = butter(filterOrder, [bpf.ACC]/nyquist, 'bandpass');
+yqACC = fillmissing(yqACC,'linear');
+filtACC = filtfilt(b, a, yqACC);
 
 % Store data into new field.
 physiology.time = timeArray - timeArray(1); physiology.time = physiology.time(:);
@@ -158,9 +185,21 @@ timeArray = min(nirs.t) : 1/physiology.PreProcParams.fSample : max(nirs.t); time
 yqRR = interp1(timestamp, RR, timeArray)';
 yqCO2 = interp1(timestamp, ETCO2, timeArray)';
 
-% Frequency filter.
-filtRR = hmrBandpassFiltLOB(yqRR, physiology.PreProcParams.fSample, bpf.RR(1), bpf.RR(2));
-filtCO2 = hmrBandpassFiltLOB(yqCO2, physiology.PreProcParams.fSample, bpf.CO2(1), bpf.CO2(2));
+% Normalize the cutoff frequencies with respect to Nyquist frequency and
+% define butterworth filter order.
+filterOrder = 3;
+nyquist = physiology.PreProcParams.fSample / 2;
+
+% Design a third-order Butterworth bandpass filter, fill nan values and
+% apply filter.
+[b, a] = butter(filterOrder, [bpf.RR]/nyquist, 'bandpass');
+yqRR = fillmissing(yqRR,'linear');
+filtRR = filtfilt(b, a, yqRR);
+
+clear a b
+[b, a] = butter(filterOrder, [bpf.CO2]/nyquist, 'bandpass');
+yqCO2 = fillmissing(yqCO2,'linear');
+filtCO2 = filtfilt(b, a, yqCO2);
 
 % Store data into new field.
 physiology.time = timeArray - timeArray(1); physiology.time = physiology.time(:);
