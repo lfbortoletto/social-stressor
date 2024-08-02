@@ -18,9 +18,6 @@ for participant = 1:29
     xlabel('Tempo (s)');
     ylabel('EDA');
     title(['Séries temporais de EDA - Participante ', num2str(participant)]);
- 
-    % plot the marker 
-    xline(data.edamove.marker.t, '--');
     
    %% Accept data or not
     a = input("Accept this participant s data? (s/n): ", 's');
